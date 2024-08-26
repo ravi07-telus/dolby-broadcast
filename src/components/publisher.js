@@ -1,12 +1,14 @@
 import {useRef, useState} from 'react'
 import { Director, Publish, View } from '@millicast/sdk';
 
+const stName = process.env.REACT_APP_STREAM_NAME;
+const accountId = process.env.REACT_APP_ACCOUNT_ID
 const tokenGenerator = () => Director.getPublisher({
-    token: '621bfca354d2ce378b99bd56cf754d8e1c9c51d6de90de3aa4d0d40b0d3a15d9', 
-    streamName: 'demo-stream',
+    token: process.env.REACT_APP_PUBLISHER_TOKEN, 
+    streamName: stName,
 });
 
-const publisher = new Publish('demo-stream', tokenGenerator);
+const publisher = new Publish(stName, tokenGenerator);
 
 const  Publisher = ()=>{
     const [streamName, setStreamName] = useState('');
@@ -35,15 +37,15 @@ const  Publisher = ()=>{
     // const viewStream = ()=>{
     //     // Create callback to generate a new token
     //     const tokenGenerator = ()  => Director.getSubscriber({
-    //     streamName: 'demo-stream',
-    //     streamAccountId: 'vLasvj',
+    //     streamName: stName,
+    //     streamAccountId: process.env.REACT_APP_ACCOUNT_ID,
     //     // Optional: This token is needed if you're subscribing to a secure stream,
     //     // This token should be provided by the publish owner.
-    //         subscriberToken: '85681c968c5dc7bef7a131bb82185c24a84bae40bbfa7985b8bacaaff979a5c2',
+    //         subscriberToken: process.env.REACT_APP_SUBSCRIBER_TOKEN,
     //     });
 
     //     // Create Millicast instance
-    //     const millicastView = new View('demo-stream', tokenGenerator,videoRef.current);
+    //     const millicastView = new View(stName, tokenGenerator,videoRef.current);
     //     millicastView.connect();
     // }
 
@@ -61,7 +63,7 @@ const  Publisher = ()=>{
         <button onClick={startStream}> Start Streaming</button>
         <button onClick={stopStream}> Stop Streaming</button>
         {/* <video ref={videoRef} autoPlay controls style={{width:'50%'}}></video> */}
-        {isStreaming && <iframe src="https://viewer.millicast.com?streamId=vLasvj/demo-stream&muted=true&disableSettings=true" allowFullScreen width="640" height="480"></iframe>}
+        {isStreaming && <iframe src={`https://viewer.millicast.com?streamId=${accountId}/${stName}&muted=true&disableSettings=true`} allowFullScreen width="640" height="480"></iframe>}
         
 
     </div>
